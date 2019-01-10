@@ -1,19 +1,26 @@
 import 	hashlib
-
+import 	time
 def hashValue(inputStr):
 	myHash = hashlib.md5()
 	myHash.update(str.encode(inputStr))
 	myHash.digest()
 	return myHash.hexdigest()
-rawText = "Hello World"
-newRawText = "Hello World"
-for i in range(1000):
-	rawText = hashValue(rawText)
-	newRawText = hashValue(newRawText)
-	print(rawText)
-	print(newRawText)
-	if rawText != newRawText:
-		raise ("abort")
-if rawText == newRawText:
-	print("good")
-
+def main():
+	rawText = "xyz"
+	for i in range(1000):
+		rawText = hashValue(rawText)
+	for i in range (27):
+		iASCII = i + 97
+		for j in range(27):
+			jASCII = j + 97
+			for k in range(27):
+				kASCII =  k + 97
+				currentChar = chr(iASCII) + chr(jASCII) + chr(kASCII)
+				for i in range(1000):
+					currentChar = hashValue(currentChar)
+				if currentChar == rawText:
+					print("done")
+					return
+start_time = time.time()
+main()
+print("--- %s seconds ---" % (time.time() - start_time))

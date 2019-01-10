@@ -6,23 +6,19 @@ def hashValue(inputStr):
 	myHash.digest()
 	return myHash.hexdigest()
 def main():
-	rawText = "zyaj"
-	for i in range(1000):
-		rawText = hashValue(rawText)
-	for i in range (27):
+	for i in range (26):
 		iASCII = i + 97
-		for j in range(27):
+		for j in range(26):
 			jASCII = j + 97
-			for k in range(27):
-				kASCII =  k + 97
-				for l in range(27):
+			for k in range(26):
+				kASCII = k + 97
+				for l in range(26):
 					lASCII = l + 97
 					currentChar = chr(iASCII) + chr(jASCII) + chr(kASCII) + chr(lASCII)
+					HashChar = chr(iASCII) + chr(jASCII) + chr(kASCII) + chr(lASCII)
 					for i in range(1000):
-						currentChar = hashValue(currentChar)
-					if currentChar == rawText:
-						print("done")
-						return
+						HashChar = hashValue(HashChar)
+					print(currentChar + ": " + HashChar)					
 start_time = time.time()
 main()
 print("--- %s seconds ---" % (time.time() - start_time))

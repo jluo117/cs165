@@ -18,7 +18,7 @@ def main():
 					HashChar = chr(iASCII) + chr(jASCII) + chr(kASCII) + chr(lASCII)
 					for i in range(1000):
 						HashChar = hashValue(HashChar)
-					print(currentChar + ": " + HashChar)					
+					print(currentChar + " " + HashChar)					
 start_time = time.time()
 main()
 print("--- %s seconds ---" % (time.time() - start_time))

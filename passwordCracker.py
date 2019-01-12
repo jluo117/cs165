@@ -1,19 +1,21 @@
-from passlib.hash import md5_crypt
+
 import  hashlib
 import sys
 import threading
 salt = "hfT7jp2q"
-magic = "$1$"
+salt = salt.encode("ASCII")
+magic = b"$1$"
 passwordList = []
 solved = False
 def ALTsum(inputStr):
 	myHash = hashlib.md5()
-	myHash.update(str.encode(inputStr + salt + inputStr))
+	decodedInput = inputStr.encode("utf-8")
+	myHash.update(decodedInput + salt + decodedInput)
 	myHash.digest()
 	return myHash.hexdigest()
 #password p
 def interSum(password,altSum):
-	intersum = password + magic + salt
+	intersum = password.encode("utf-8") + magic + salt
 	if len(password) > len(altSum):
 		curIndex = 0
 		cloneSum = altSum
@@ -24,41 +26,55 @@ def interSum(password,altSum):
 			curIndex += 1
 
 	myBinary = str(format(len(password), "b"))
+	if len(myBinary) < 4:
+		needToADD = 4 - len(myBinary)
+		for i in range(needToADD):
+			myBinary = str(0) + myBinary
 	for i in range(len(myBinary) - 1):
+		print(myBinary[i])
 		if myBinary[i] != 0:
-			intersum += password[0]
+			intersum += password[0].encode("utf-8")
 		else:
-			interSum += chr(0)
+			interSum += chr(0).encode("utf-8")
 	myHash = hashlib.md5()
-	myHash.update(str.encode(intersum))
+	myHash.update(intersum)
 	myHash.digest() 
 	return myHash.hexdigest()
 
 def fastHash(intermedite,password,salt):
 	#aab password+salt+password + aab
-	theHash = None
-	for i in range(1000):
+	theHash = intermedite + password
+	myHash = hashlib.md5()
+	myHash.update(theHash.encode("utf-8"))
+	myHash.digest()
+	intermedite = myHash.hexdigest()
+	for i in range(1,1000):
 		if i % 2 == 0:
-			theHash = intermedite
+			theHash = intermedite.encode("utf-8")
 		else:
-			theHash = password
+			theHash = password.encode("utf-8")
 		if i % 3 != 0:
 			theHash += salt
 		if i % 7 != 0:
-			theHash += password
+			theHash += password.encode("utf-8")
 		if i % 2 == 0:
-			theHash += password
+			theHash += password.encode("utf-8")
 		else:
-			theHash += intermedite
+			theHash += intermedite.encode("utf-8")
 		myHash = hashlib.md5()
-		myHash.update(str.encode(theHash))
+		myHash.update(theHash)
 		myHash.digest()
 		intermedite = myHash.hexdigest()
+		print(intermedite)
 	return intermedite
+
 def genHash(password):
 	altsum = ALTsum(password)
+	print(altsum)
 	intersum = interSum(password,altsum)
+	print(intersum)
 	return fastHash(intersum,password,salt)
+
 def generatePW():
 	for i in range(97,123):
 		curPassWord = chr(i)
@@ -87,4 +103,6 @@ def generatePW():
 									print(passwordList)
 									if solved:
 										sys.exit()
+print("password".encode("utf-8"))
+print("password".encode("utf-8")[0])
 print(genHash("password"))

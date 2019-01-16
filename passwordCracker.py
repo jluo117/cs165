@@ -1,4 +1,4 @@
-
+from hashlib import  md5
 import  hashlib
 import sys
 import threading
@@ -7,12 +7,17 @@ salt = salt
 magic = "$1$"
 passwordList = []
 solved = False
+_c_digest_offsets = (
+    (0, 3), (5, 1), (5, 3), (1, 2), (5, 1), (5, 3), (1, 3),
+    (4, 1), (5, 3), (1, 3), (5, 0), (5, 3), (1, 3), (5, 1),
+    (4, 3), (1, 3), (5, 1), (5, 2), (1, 3), (5, 1), (5, 3),
+    )
 def ALTsum(inputStr):
 	myHash = hashlib.md5()
 	decodedInput = inputStr
 	myHash.update((decodedInput + salt + decodedInput).encode("utf-8"))
 	myHash.digest()
-	print(myHash.hexdigest())
+	#print(myHash.hexdigest())
 	return myHash
 #password p
 def interSum(password,altSum,encodedPassword):
@@ -29,13 +34,11 @@ def interSum(password,altSum,encodedPassword):
 	intersum = intersum.encode("utf-8")
 	for i in range(len(password)):
 		intersum += bytearray([altSum.digest()[i % 16]])
-		print(bytearray([altSum.digest()[i % 16]]))
-		print(([altSum.digest()[i % 16]]))
 		#print(str(bytes(altSum[i % 16],"utf-8")))
 	myHash = hashlib.md5()
 	myHash.update((intersum))
 	
-	print(myHash.hexdigest())
+	#print(myHash.hexdigest())
 	pwSize = len(password)
 	while (pwSize != 0):
 		if pwSize&1 == 0:
@@ -45,36 +48,31 @@ def interSum(password,altSum,encodedPassword):
 		pwSize >>= 1 
 	myHash = hashlib.md5()
 	myHash.update((intersum))
-	
-	print(myHash.hexdigest())
+	myHash.digest()
+	#print(myHash.hexdigest())
 	return  myHash
 
 def fastHash(intermedite,password,salt):
 	#aab password+salt+password + aab
-	theHash = intermedite.digest() + password.encode("utf-8")
-	myHash = hashlib.md5()
-	myHash.update(theHash)
-	myHash.digest()
-	intermedite = myHash.hexdigest()
-	for i in range(1,1000):
+	#print(intermedite)
+	
+	for i in range(1000):
+		intermediteHash = intermedite.digest()
+		newSum = hashlib.md5()
 		if i % 2 == 0:
-			theHash = intermedite.encode("utf-8")
+			newSum.update(intermediteHash)
 		else:
-			theHash = password.encode("utf-8")
+			newSum.update(password.encode("utf-8"))
 		if i % 3 != 0:
-			theHash += salt.encode("utf-8")
+			newSum.update(salt.encode("utf-8"))
 		if i % 7 != 0:
-			theHash += password.encode("utf-8")
+			newSum.update(password.encode("utf-8"))
 		if i % 2 == 0:
-			theHash += password.encode("utf-8")
-		else:
-			theHash += intermedite.encode("utf-8")
-		myHash = hashlib.md5()
-		myHash.update(theHash)
-		myHash.digest()
-		intermedite = myHash.hexdigest()
-		#print(intermedite)
-	return intermedite
+			newSum.update(password.encode("utf-8"))
+		if i % 2 != 0:
+			newSum.update(intermediteHash)
+		intermedite = newSum
+	return intermedite.hexdigest()
 
 def genHash(password):
 	altsum = ALTsum(password)

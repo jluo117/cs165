@@ -154,8 +154,9 @@ def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	if myPWD in doneValue:
 		return 
-	result = genHash(myPWD)
 	doneValue.add(myPWD)
+	result = genHash(myPWD)
+	#doneValue.add(myPWD)
 	print(myPWD)
 	if str(result) == str(targetHash):
 			#print(result)

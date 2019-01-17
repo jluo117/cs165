@@ -8,6 +8,7 @@ import twilio
 from twilio.rest import Client
 import threading
 from queue import *
+import 	time
 solved = ["done"]
 CryptBase = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 md5CryptSwaps = [12, 6, 0, 13, 7, 1, 14, 8, 2, 15, 9, 3, 5, 10, 4, 11]
@@ -140,8 +141,8 @@ def generatePW():
 								for p in range(97,123):
 									curPassWord += chr(p)
 									passwordList.put(curPassWord)
-									if solved:
-										sys.exit()
+									if len(solved) == 0:
+										return 
 def consumer_thread(targetHash):
 
 	while not len(solved) == 0:
@@ -155,7 +156,7 @@ def consumer_thread(targetHash):
 			print(myPWD)
 			sendMsg(myPWD)
 			solved.pop()
-	sys.exit()
+	return 
 
 def sendMsg(msg):
     account_sid = "ACe704104c6f665965aeb765eea2a1502a"
@@ -177,6 +178,7 @@ def main():
 		myThread = threading.Thread( target = consumer_thread(targetHash))
 		myThread.start()
 def notThreading():
+	start_time = time.time()
 	targetHash = genHash("aaaaz")
 	#print(targetHash)
 	passwordList.put("asdasdasd")
@@ -187,4 +189,7 @@ def notThreading():
 	myThread.start()
 	myThread2 = threading.Thread( target = consumer_thread(targetHash))
 	myThread2.start()
+
+start_time = time.time()
 main()
+print("--- %s seconds ---" % (time.time() - start_time))

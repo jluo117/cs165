@@ -152,9 +152,6 @@ def generatePW(targetHash):
 							curPassWord = ""
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
-	if myPWD in doneValue:
-		return 
-	doneValue.add(myPWD)
 	result = genHash(myPWD)
 	#doneValue.add(myPWD)
 	print(myPWD)

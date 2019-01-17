@@ -3,7 +3,7 @@ from hashlib import  md5
 import  hashlib
 import sys
 import threading
-import numpy as np
+#import numpy as np
 import twilio
 from twilio.rest import Client
 import threading

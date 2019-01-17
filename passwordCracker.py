@@ -128,36 +128,28 @@ def generatePW(targetHash):
 		mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
 		mythread.start()
 		for j in range(97,123):
-			curPassWord += chr(j)
+			curPassWord = chr(j)
 			mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
 			mythread.start()
 			for k in range(97,123):
-				curPassWord += chr(k)
+				curPassWord = chr(i) + chr(k)
 				mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
 				mythread.start()
 				for l in range(97,123):
-					curPassWord += chr(l)
+					curPassWord = chr(i) + chr(k) + chr(l)
 					mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
 					mythread.start()
 					for m in range(97,123):
-						curPassWord += chr(m)
+						curPassWord = chr(i) + chr(k) + chr(l) + chr(m)
 						mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
 						mythread.start()
 						for n in range(97,123):
-							curPassWord += chr(n)
+							curPassWord = chr(i) + chr(k) + chr(l) + chr(m) + chr(n)
 							mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-							mythread.start()
-							for o in range(97,123):
-								curPassWord += chr(o)
-								mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-								mythread.start()
-								for p in range(97,123):
-									curPassWord += chr(p)
-									mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-									mythread.start()
-									if len(solved) == 0:
-										return 
-									curPassWord = ""
+							mythread.start()	
+							if len(solved) == 0:
+								return 
+							curPassWord = ""
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	if myPWD in doneValue:

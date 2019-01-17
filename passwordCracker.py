@@ -1,7 +1,11 @@
+#$1$hfT7jp2q$G3yf0NUx7mUkX.LIFWQxN.
 from hashlib import  md5
 import  hashlib
 import sys
 import threading
+import numpy as np
+CryptBase = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+md5CryptSwaps = [12, 6, 0, 13, 7, 1, 14, 8, 2, 15, 9, 3, 5, 10, 4, 11]
 salt = "hfT7jp2q"
 salt = salt
 magic = "$1$"
@@ -48,9 +52,11 @@ def interSum(password,altSum,encodedPassword):
 		pwSize >>= 1 
 	myHash = hashlib.md5()
 	myHash.update((intersum))
-	myHash.digest()
+	#myHash.digest()
 	#print(myHash.hexdigest())
 	return  myHash
+def unsigned(n):
+	return n & 0xFFFFFFFF
 
 def fastHash(intermedite,password,salt):
 	#aab password+salt+password + aab
@@ -72,13 +78,38 @@ def fastHash(intermedite,password,salt):
 		if i % 2 != 0:
 			newSum.update(intermediteHash)
 		intermedite = newSum
-	return intermedite.hexdigest()
+	return intermedite
+
+def reorder(fasthash):
+	result = []
+	v= unsigned(0)
+	bits = unsigned(0)
+	for i in md5CryptSwaps:
+		v |= fasthash.digest()[i] << bits
+		print(unsigned(fasthash.digest()[i]))
+		print(bin (fasthash.digest()[i]))
+		#print(v)
+		#print((fasthash.digest()[i]))
+		bits += 8
+		while bits > 6:
+			result.append(CryptBase[v&0x03f])
+			v >>= 6
+			bits += -6
+	result.append(CryptBase[v&0x3f])
+	return result
+	
+def aryToStr(ary):
+	returnStr = ""
+	for i in ary:
+		returnStr += i
+	return magic + salt + '$' + returnStr
 
 def genHash(password):
 	altsum = ALTsum(password)
 	intersum = interSum(password,altsum,password)
-	return fastHash(intersum,password,salt)
-
+	fasthash = fastHash(intersum,password,salt)
+	reorderResult =  reorder(fasthash)
+	return aryToStr(reorderResult)
 def generatePW():
 	for i in range(97,123):
 		curPassWord = chr(i)

@@ -158,15 +158,17 @@ def generatePW(targetHash):
 										return 
 									curPassWord = ""
 def consumer_thread(targetHash,myPWD):
+	#print(myPWD)
 	result = genHash(myPWD)
 
-	print(result)
+	#print(myPWD)
 	if str(result) == str(targetHash):
 			#print(result)
 		print(myPWD)
 		sendMsg(myPWD)
 		solved.pop()
-		return 
+	return 
+	#sys.exit()
 
 def sendMsg(msg):
     account_sid = "ACe704104c6f665965aeb765eea2a1502a"

@@ -35,11 +35,16 @@ def interSum(password,altSum,encodedPassword):
 	if len(password) > altSum.digest_size:
 		curIndex = 0
 		cloneSum = altSum
-		while len(cloneSum) < len(password):
-			if curIndex >= len(cloneSum):
+		cloneSumLengeth = int (cloneSum.digest_size)
+		print(cloneSumLengeth)
+		print(len(password))
+		print(password)
+		while cloneSumLengeth < len(password):
+			if curIndex >= cloneSumLengeth:
 				curIndex = 0
-			cloneSum += altSum[curIndex]
-			curIndex += 1
+				cloneSum += altSum[curIndex]
+				curIndex += 1
+				cloneSumLengeth += 1
 		altSum = cloneSum
 	intersum = intersum.encode("utf-8")
 	for i in range(len(password)):
@@ -116,48 +121,52 @@ def genHash(password):
 	fasthash = fastHash(intersum,password,salt)
 	reorderResult =  reorder(fasthash)
 	return aryToStr(reorderResult)
-def generatePW():
+def generatePW(targetHash):
 	for i in range(97,123):
 		curPassWord = chr(i)
-		passwordList.put(curPassWord)
+		mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
+		mythread.start()
 		for j in range(97,123):
 			curPassWord += chr(j)
-			passwordList.put(curPassWord)
+			mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
+			mythread.start()
 			for k in range(97,123):
 				curPassWord += chr(k)
-				passwordList.put(curPassWord)
+				mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
+				mythread.start()
 				for l in range(97,123):
 					curPassWord += chr(l)
-					passwordList.put(curPassWord)
+					mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
+					mythread.start()
 					for m in range(97,123):
 						curPassWord += chr(m)
-						passwordList.put(curPassWord)
+						mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
+						mythread.start()
 						for n in range(97,123):
 							curPassWord += chr(n)
-							passwordList.put(curPassWord)
+							mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
+							mythread.start()
 							for o in range(97,123):
 								curPassWord += chr(o)
-								passwordList.put(curPassWord)
+								mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
+								mythread.start()
 								for p in range(97,123):
 									curPassWord += chr(p)
-									passwordList.put(curPassWord)
+									mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
+									mythread.start()
 									if len(solved) == 0:
 										return 
-def consumer_thread(targetHash):
+									curPassWord = ""
+def consumer_thread(targetHash,myPWD):
+	result = genHash(myPWD)
 
-	while not len(solved) == 0:
-		#print(targetHash)
-		myPWD = passwordList.get()
-		#print(myPWD)
-		result = genHash(myPWD)
-
-		print(result)
-		if str(result) == str(targetHash):
+	print(result)
+	if str(result) == str(targetHash):
 			#print(result)
-			print(myPWD)
-			sendMsg(myPWD)
-			solved.pop()
-	return 
+		print(myPWD)
+		sendMsg(myPWD)
+		solved.pop()
+		return 
 
 def sendMsg(msg):
     account_sid = "ACe704104c6f665965aeb765eea2a1502a"
@@ -173,11 +182,8 @@ def sendMsg(msg):
 def main():
 	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 	targetHash = testHash
-	t1 = threading.Thread( target = generatePW())
-	t1.start()
-	for i in range(7):
-		myThread = threading.Thread( target = consumer_thread(targetHash))
-		myThread.start()
+	generatePW(targetHash)
+
 def notThreading():
 	start_time = time.time()
 	targetHash = genHash("aaaaz")
@@ -191,6 +197,6 @@ def notThreading():
 	myThread2 = threading.Thread( target = consumer_thread(targetHash))
 	myThread2.start()
 
-start_time = time.time()
+#start_time = time.time()
 main()
-print("--- %s seconds ---" % (time.time() - start_time))
+#print("--- %s seconds ---" % (time.time() - start_time))

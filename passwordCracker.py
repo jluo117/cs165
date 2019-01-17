@@ -10,6 +10,7 @@ import threading
 from queue import *
 import 	time
 solved = ["done"]
+doneValue = set()
 CryptBase = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 md5CryptSwaps = [12, 6, 0, 13, 7, 1, 14, 8, 2, 15, 9, 3, 5, 10, 4, 11]
 salt = "hfT7jp2q"
@@ -159,9 +160,11 @@ def generatePW(targetHash):
 									curPassWord = ""
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
+	if myPWD in doneValue:
+		return 
 	result = genHash(myPWD)
-
-	#print(myPWD)
+	doneValue.add(myPWD)
+	print(myPWD)
 	if str(result) == str(targetHash):
 			#print(result)
 		print(myPWD)

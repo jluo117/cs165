@@ -150,7 +150,8 @@ def consumer_thread(targetHash):
 		myPWD = passwordList.get()
 		#print(myPWD)
 		result = genHash(myPWD)
-		#print(result)
+
+		print(result)
 		if str(result) == str(targetHash):
 			#print(result)
 			print(myPWD)

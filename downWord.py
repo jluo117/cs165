@@ -132,15 +132,17 @@ def generatePW(targetHash):
 		myQueue.append(curPassWord)
 		print(curPassWord)
 		baseCase2(curPassWord,myQueue,targetHash)
+		newThread = Thread(target = consumer_thread,args = (targetHash,myQueue))
+		newThread.start()
 def baseCase2(curPassWord,myQueue,targetHash):
 	for i in range(97,123):
 		newWord = curPassWord + chr(i)
 		myQueue.append(newWord)
 		recursiveBuild(newWord,myQueue)
-		newThread = Thread(target = consumer_thread,args = (targetHash,myQueue))
-		myQueue = []
+		#newThread = Thread(target = consumer_thread,args = (targetHash,myQueue))
+		
 		print(newWord)
-		newThread.start()
+		#newThread.start()
 def recursiveBuild(curPassWord,myQueue):
 	if len(curPassWord) == 6:
 		return 

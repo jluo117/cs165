@@ -139,7 +139,6 @@ def baseCase2(curPassWord,myQueue,targetHash):
 		myQueue.append(newWord)
 		recursiveBuild(newWord,myQueue)
 		newThread = Thread(target = consumer_thread,args = (targetHash,myQueue))
-		myQueue = []
 		print(newWord)
 		newThread.start()
 

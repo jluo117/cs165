@@ -17,7 +17,7 @@ md5CryptSwaps = [12, 6, 0, 13, 7, 1, 14, 8, 2, 15, 9, 3, 5, 10, 4, 11]
 salt = "hfT7jp2q"
 salt = salt
 magic = "$1$"
-passwordList = Queue()
+GlobalQueue = Queue()
 targetHash = None
 _c_digest_offsets = (
     (0, 3), (5, 1), (5, 3), (1, 2), (5, 1), (5, 3), (1, 3),
@@ -127,44 +127,45 @@ def generatePW(targetHash):
 	diffrent = 110 - 97
 	for i in range(diffrent):
 		myQueue = []
-		startNum = ord('l')
-		curPassWord = chr(startNum - i)
-		print(curPassWord)		
-		myQueue.append(curPassWord)
-		for j in range(97,123):
-			curPassWord = chr(startNum - i) + chr(j)
-			myQueue.append(curPassWord)
-			print(curPassWord)	
-			for k in range(97,123):
-				curPassWord = chr(startNum - i) + chr(j) + chr(k)
-				myQueue.append(curPassWord)
-				for l in range(97,123):
-					curPassWord = chr(startNum - i) + chr(j) + chr(k) + chr(l)
-					myQueue.append(curPassWord)
-					for m in range(97,123):
-						curPassWord = chr(startNum - i) + chr(j) + chr(k) + chr(l) + chr(m)
-						myQueue.append(curPassWord)
-						for n in range(97,123):
-							curPassWord = chr(startNum - i) + chr(j) + chr(k) + chr(l) + chr(m) + chr(n)
-							myQueue.append(curPassWord)
-							if len(solved) == 0:
-								return 
-			holdingQueue = myQueue
-			mythread = Thread(consumer_thread(targetHash,holdingQueue))
-			mythread.start()
+		startChar = ord('l')
+		for i in range(startChar,123):
 			myQueue = []
+			curPassWord = chr(i)
+			myQueue.append(curPassWord)
+			print(curPassWord)
+			baseCase2(curPassWord,myQueue)
+def baseCase2(curPassWord,myQueue):
+	for i in range(97,123):
+		newWord = curPassWord + chr(i)
+		myQueue.append(newWord)
+		recursiveBuild(newWord,myQueue)
+		for i in myQueue:
+			GlobalQueue.put(i)
+		#print(myQueue)
+		myQueue = []
+		print(newWord)
+def recursiveBuild(curPassWord,myQueue):
+	if len(curPassWord) == 6:
+		return 
+	for i in range(97,123):
+		newWord = curPassWord + chr(i)
+		myQueue.append(newWord)
+		recursiveBuild(newWord,myQueue)
 
-def consumer_thread(targetHash,myPWD):
+def consumer_thread(targetHash):
 	#print(myPWD)
 	print("cracking")
-	for i in myPWD:
+	if GlobalQueue.empty():
+		time.sleep(5)
+	while not (GlobalQueue.empty()):
+		i = GlobalQueue.get()
 		result = genHash(i)
 		if str(result) == str(targetHash):
 			#print(result)
 			print(myPWD)
 			sendMsg(myPWD)
 			solved.pop()
-	return 
+			return 
 	#return 
 	#sys.exit()
 

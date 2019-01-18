@@ -11,6 +11,7 @@ from threading import Thread
 from queue import *
 import 	time
 solved = ["done"]
+GlobalQueue = Queue()
 doneValue = set()
 CryptBase = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 md5CryptSwaps = [12, 6, 0, 13, 7, 1, 14, 8, 2, 15, 9, 3, 5, 10, 4, 11]
@@ -130,28 +131,25 @@ def generatePW(targetHash):
 		curPassWord = chr(120 - i)
 		myQueue.append(curPassWord)
 		print(curPassWord)
-		for j in range(97,123):
-			curPassWord = chr(120 - i) + chr(j)
-			myQueue.append(curPassWord)
-			print(curPassWord)
-			for k in range(97,123):
-				curPassWord = chr(120 - i) + chr(j) + chr(k)
-				myQueue.append(curPassWord)
-				for l in range(97,123):
-					curPassWord = chr(120 - i) + chr(j) + chr(k) + chr(l)
-					myQueue.append(curPassWord)
-					for m in range(97,123):
-						curPassWord = chr(120 - i) + chr(j) + chr(k) + chr(l) + chr(m)
-						myQueue.append(curPassWord)
-						for n in range(97,123):
-							curPassWord = chr(120 - i) + chr(j) + chr(k) + chr(l) + chr(m) + chr(n)
-							myQueue.append(curPassWord)
-							if len(solved) == 0:
-								return 
-			holdingQueue = myQueue
-			myThread = Thread(target = consumer_thread(targetHash,holdingQueue))
-			myThread.start()
-			myQueue = []
+		baseCase2(curPassWord,myQueue)
+def baseCase2(curPassWord,myQueue):
+	for i in range(97,123):
+		newWord = curPassWord + chr(i)
+		myQueue.append(newWord)
+		recursiveBuild(newWord,myQueue)
+		for i in myQueue:
+			GlobalQueue.put(i)
+		#print(myQueue)
+		myQueue = []
+		print(newWord)
+def recursiveBuild(curPassWord,myQueue):
+	if len(curPassWord) == 6:
+		return 
+	for i in range(97,123):
+		newWord = curPassWord + chr(i)
+		myQueue.append(newWord)
+		recursiveBuild(newWord,myQueue)
+
 
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)

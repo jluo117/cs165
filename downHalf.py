@@ -200,5 +200,5 @@ def notThreading():
 	myThread2.start()
 
 #start_time = time.time()
-print(genHash("password"))
+main()
 #print("--- %s seconds ---" % (time.time() - start_time))

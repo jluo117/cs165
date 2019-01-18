@@ -147,10 +147,10 @@ def generatePW(targetHash):
 							myQueue.append(curPassWord)
 							if len(solved) == 0:
 								return 
-		holdingQueue = myQueue
-		myThread = threading.Thread(target = consumer_thread(targetHash,holdingQueue))
-		myThread.start
-		myQueue = []
+			holdingQueue = myQueue
+			myThread = threading.Thread(target = consumer_thread(targetHash,holdingQueue))
+			myThread.start
+			myQueue = []
 
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)

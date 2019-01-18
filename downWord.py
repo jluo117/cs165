@@ -149,7 +149,7 @@ def generatePW(targetHash):
 								return 
 			holdingQueue = myQueue
 			myThread = threading.Thread(target = consumer_thread(targetHash,holdingQueue))
-			myThread.start
+			myThread.start()
 			myQueue = []
 
 def consumer_thread(targetHash,myPWD):

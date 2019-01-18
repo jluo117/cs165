@@ -183,7 +183,12 @@ def sendMsg(msg):
 def main():
 	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 	targetHash = testHash
-	generatePW(targetHash)
+	myThread = threading.Thread( target = generatePW(targetHash))
+	#generatePW(targetHash)
+	myThread.start()
+	for i in range (8):
+		consumerThread = Thread(target = consumer_thread(targetHash))
+		consumerThread.start()
 
 def notThreading():
 	start_time = time.time()

@@ -151,11 +151,13 @@ def recursiveBuild(curPassWord,myQueue):
 		recursiveBuild(newWord,myQueue)
 
 
-def consumer_thread(targetHash,myPWD):
+def consumer_thread(targetHash):
 	#print(myPWD)
-	#doneValue.add(myPWD)
 	print("cracking")
-	for i in myPWD:
+	if GlobalQueue.empty():
+		time.sleep(5)
+	while not (GlobalQueue.empty()):
+		i = GlobalQueue.get()
 		result = genHash(i)
 		if str(result) == str(targetHash):
 			#print(result)

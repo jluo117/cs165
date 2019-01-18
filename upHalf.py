@@ -16,7 +16,7 @@ md5CryptSwaps = [12, 6, 0, 13, 7, 1, 14, 8, 2, 15, 9, 3, 5, 10, 4, 11]
 salt = "hfT7jp2q"
 salt = salt
 magic = "$1$"
-passwordList = Queue()
+#passwordList = Queue()
 targetHash = None
 _c_digest_offsets = (
     (0, 3), (5, 1), (5, 3), (1, 2), (5, 1), (5, 3), (1, 3),
@@ -123,43 +123,38 @@ def genHash(password):
 	reorderResult =  reorder(fasthash)
 	return aryToStr(reorderResult)
 def generatePW(targetHash):
-	for i in range(110,123):
+	for i in range(112,123):
+		myQueue = []
 		curPassWord = chr(i)
-		mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-		mythread.start()
+		myQueue.append(curPassWord)
 		for j in range(97,123):
 			curPassWord = chr(i) + chr(j)
-			mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-			mythread.start()
+			myQueue.append(curPassWord)
 			for k in range(97,123):
 				curPassWord = chr(i) + chr(j) + chr(k)
-				mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-				mythread.start()
+				myQueue.append(curPassWord)
 				for l in range(97,123):
 					curPassWord = chr(i) + chr(j) + chr(k) + chr(l)
-					mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-					mythread.start()
+					myQueue.append(curPassWord)
 					for m in range(97,123):
 						curPassWord = chr(i) + chr(j) + chr(k) + chr(l) + chr(m)
-						mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-						mythread.start()
+						myQueue.append(curPassWord)
 						for n in range(97,123):
 							curPassWord = chr(i) + chr(j) + chr(k) + chr(l) + chr(m) + chr(n)
-							mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-							mythread.start()	
+							myQueue.append(curPassWord)
+							mythread = threading.Thread(consumer_thread(targetHash,myQueue))
+							mythread.start()
 							if len(solved) == 0:
 								return 
 							curPassWord = ""
 def consumer_thread(targetHash,myPWD):
-	#print(myPWD)
-	result = genHash(myPWD)
-	#doneValue.add(myPWD)
-	print(myPWD)
-	if str(result) == str(targetHash):
+	for i in myPWD:
+		result = genHash(i)
+		if str(result) == str(targetHash):
 			#print(result)
-		print(myPWD)
-		sendMsg(myPWD)
-		solved.pop()
+			print(myPWD)
+			sendMsg(myPWD)
+			solved.pop()
 	return 
 	#sys.exit()
 

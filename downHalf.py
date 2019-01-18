@@ -7,8 +7,10 @@ import threading
 import twilio
 from twilio.rest import Client
 import threading
+from multiprocessing import *
 from queue import *
 import 	time
+myQueue = []
 solved = ["done"]
 doneValue = set()
 CryptBase = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -125,44 +127,41 @@ def genHash(password):
 def generatePW(targetHash):
 	diffrent = 110 - 97
 	for i in range(diffrent):
-		startNum = ord('m')
+		startNum = ord('l')
 		curPassWord = chr(startNum - i)
-		mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-		mythread.start()
+		print(curPassWord)		
+		myQueue.append(curPassWord)
 		for j in range(97,123):
 			curPassWord = chr(startNum - i) + chr(j)
-			mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-			mythread.start()
+			myQueue.append(curPassWord)
 			for k in range(97,123):
 				curPassWord = chr(startNum - i) + chr(j) + chr(k)
-				mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-				mythread.start()
+				myQueue.append(curPassWord)
 				for l in range(97,123):
 					curPassWord = chr(startNum - i) + chr(j) + chr(k) + chr(l)
-					mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-					mythread.start()
+					myQueue.append(curPassWord)
 					for m in range(97,123):
 						curPassWord = chr(startNum - i) + chr(j) + chr(k) + chr(l) + chr(m)
-						mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-						mythread.start()
+						myQueue.append(curPassWord)
 						for n in range(97,123):
 							curPassWord = chr(startNum - i) + chr(j) + chr(k) + chr(l) + chr(m) + chr(n)
-							mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-							mythread.start()	
+							myQueue.append(curPassWord)
+							mythread = threading.Thread(consumer_thread(targetHash,myQueue))
+							mythread.start()
 							if len(solved) == 0:
 								return 
 							curPassWord = ""
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
-	result = genHash(myPWD)
-	#doneValue.add(myPWD)
-	print(myPWD)
-	if str(result) == str(targetHash):
+	for i in myPWD:
+		result = genHash(i)
+		if str(result) == str(targetHash):
 			#print(result)
-		print(myPWD)
-		sendMsg(myPWD)
-		solved.pop()
+			print(myPWD)
+			sendMsg(myPWD)
+			solved.pop()
 	return 
+	#return 
 	#sys.exit()
 
 def sendMsg(msg):

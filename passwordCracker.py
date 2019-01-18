@@ -123,10 +123,11 @@ def genHash(password):
 	reorderResult =  reorder(fasthash)
 	return aryToStr(reorderResult)
 def generatePW(targetHash):
-	for i in range(97,123):
+	for i in range(99,123):
 		curPassWord = chr(i)
 		mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
 		mythread.start()
+		print(curPassWord)
 		for j in range(97,123):
 			curPassWord = chr(i) + chr(j)
 			mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
@@ -154,7 +155,7 @@ def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	result = genHash(myPWD)
 	#doneValue.add(myPWD)
-	print(myPWD)
+	#print(myPWD)
 	if str(result) == str(targetHash):
 			#print(result)
 		print(myPWD)

@@ -128,6 +128,7 @@ def generatePW(targetHash):
 		curPassWord = chr(122 - i)
 		mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
 		mythread.start()
+		print(curPassWord)
 		for j in range(97,123):
 			curPassWord = chr(122 - i) + chr(j)
 			mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
@@ -155,7 +156,6 @@ def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	result = genHash(myPWD)
 	#doneValue.add(myPWD)
-	print(myPWD)
 	if str(result) == str(targetHash):
 			#print(result)
 		print(myPWD)

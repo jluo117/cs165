@@ -54,7 +54,7 @@ def interSum(password,altSum,encodedPassword):
 	intersum = intersum.encode("utf-8")
 	for i in range(len(password)):
 		intersum += bytearray([altSum.digest()[i % 16]])
-		#print(str(bytes(altSum[i % 16],"utf-8")))
+		#print(([altSum.digest()[i % 16]]))
 	myHash = hashlib.md5()
 	myHash.update((intersum))
 	
@@ -140,7 +140,7 @@ def baseCase2(curPassWord,myQueue,targetHash):
 		newWord = curPassWord + chr(i)
 		myQueue.append(newWord)
 		recursiveBuild(newWord,myQueue)
-		newThread = Thread(target = consumer_thread(targetHash,myQueue))
+		newThread = Thread(target = consumer_thread,args = (targetHash,myQueue))
 		myQueue = []
 		print(newWord)
 		newThread.start()
@@ -185,18 +185,18 @@ def main():
 	generatePW(targetHash)
 	#generatePW(targetHash)
 
-def notThreading():
-	start_time = time.time()
-	targetHash = genHash("aaaaz")
-	#print(targetHash)
-	passwordList.put("asdasdasd")
-	passwordList.put("fdsafdsafsadf")
-	passwordList.put("aaaaz")
-	passwordList.put("fdsafdsafsadf")
-	myThread = threading.Thread( target = consumer_thread(targetHash))
-	myThread.start()
-	myThread2 = threading.Thread( target = consumer_thread(targetHash))
-	myThread2.start()
+# def notThreading():
+# 	start_time = time.time()
+# 	targetHash = genHash("aaaaz")
+# 	#print(targetHash)
+# 	passwordList.put("asdasdasd")
+# 	passwordList.put("fdsafdsafsadf")
+# 	passwordList.put("aaaaz")
+# 	passwordList.put("fdsafdsafsadf")
+# 	myThread = threading.Thread( target = consumer_thread(targetHash))
+# 	myThread.start()
+# 	myThread2 = threading.Thread( target = consumer_thread(targetHash))
+# 	myThread2.start()
 
 #start_time = time.time()
 main()

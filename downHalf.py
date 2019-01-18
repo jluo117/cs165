@@ -49,7 +49,9 @@ def interSum(password,altSum,encodedPassword):
 				cloneSumLengeth += 1
 		altSum = cloneSum
 	intersum = intersum.encode("utf-8")
+	
 	for i in range(len(password)):
+		print(bytearray([altSum.digest()[i % 16]]))
 		intersum += bytearray([altSum.digest()[i % 16]])
 		#print(str(bytes(altSum[i % 16],"utf-8")))
 	myHash = hashlib.md5()
@@ -139,7 +141,7 @@ def baseCase2(curPassWord,myQueue,targetHash):
 		newWord = curPassWord + chr(i)
 		myQueue.append(newWord)
 		recursiveBuild(newWord,myQueue)
-		newThread = Thread(target = consumer_thread(targetHash,myQueue))
+		newThread = Thread(target = consumer_thread,args = (targetHash,myQueue))
 		myQueue = []
 		print(newWord)
 		newThread.start()
@@ -199,5 +201,5 @@ def notThreading():
 	myThread2.start()
 
 #start_time = time.time()
-main()
+print(genHash("password"))
 #print("--- %s seconds ---" % (time.time() - start_time))

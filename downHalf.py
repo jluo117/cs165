@@ -39,9 +39,9 @@ def interSum(password,altSum,encodedPassword):
 		curIndex = 0
 		cloneSum = altSum
 		cloneSumLengeth = int (cloneSum.digest_size)
-		print(cloneSumLengeth)
-		print(len(password))
-		print(password)
+		# print(cloneSumLengeth)
+		# print(len(password))
+		# print(password)
 		while cloneSumLengeth < len(password):
 			if curIndex >= cloneSumLengeth:
 				curIndex = 0

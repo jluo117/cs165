@@ -51,7 +51,7 @@ def interSum(password,altSum,encodedPassword):
 	intersum = intersum.encode("utf-8")
 	
 	for i in range(len(password)):
-		print(bytearray([altSum.digest()[i % 16]]))
+		#print(bytearray([altSum.digest()[i % 16]]))
 		intersum += bytearray([altSum.digest()[i % 16]])
 		#print(str(bytes(altSum[i % 16],"utf-8")))
 	myHash = hashlib.md5()

@@ -131,18 +131,17 @@ def generatePW(targetHash):
 		myQueue.append(curPassWord)
 		curPassWord = chr(i)
 		print(curPassWord)
-		baseCase2(curPassWord,myQueue)
+		baseCase2(curPassWord,myQueue,targetHash)
 
-def baseCase2(curPassWord,myQueue):
+def baseCase2(curPassWord,myQueue,targetHash):
 	for i in range(97,123):
 		newWord = curPassWord + chr(i)
 		myQueue.append(newWord)
 		recursiveBuild(newWord,myQueue)
-		for i in myQueue:
-			GlobalQueue.put(i)
-		#print(myQueue)
+		newThread = Thread(target = consumer_thread(targetHash,myQueue))
 		myQueue = []
 		print(newWord)
+		newThread.start()
 
 def recursiveBuild(curPassWord,myQueue):
 	if len(curPassWord) == 6:
@@ -153,13 +152,11 @@ def recursiveBuild(curPassWord,myQueue):
 		recursiveBuild(newWord,myQueue)
 
 
-def consumer_thread(targetHash):
+def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	print("cracking")
-	if GlobalQueue.empty():
-		time.sleep(5)
-	while not (GlobalQueue.empty()):
-		i = GlobalQueue.get()
+	
+	for i in myPWD:
 		result = genHash(i)
 		if str(result) == str(targetHash):
 			#print(result)
@@ -181,8 +178,8 @@ def sendMsg(msg):
 
 def main():
 	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
-	newTread = threading.Thread(target = generatePW(targetHash))
-	newTread.start()
+	targetHash = testHash
+	generatePW(targetHash)
 
 def notThreading():
 	start_time = time.time()

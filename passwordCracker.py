@@ -127,24 +127,24 @@ def genHash(password):
 	reorderResult =  reorder(fasthash)
 	return aryToStr(reorderResult)
 
-def generatePW():
+def generatePW(targetHash):
 	startChar = ord('c')
-	for i in range(startChar,123):
+	for i in range(startChar,122):
 		myQueue = []
 		curPassWord = chr(i)
 		myQueue.append(curPassWord)
 		print(curPassWord)
-		baseCase2(curPassWord,myQueue)
-def baseCase2(curPassWord,myQueue):
+		baseCase2(curPassWord,myQueue,targetHash)
+def baseCase2(curPassWord,myQueue,targetHash):
 	for i in range(97,123):
 		newWord = curPassWord + chr(i)
 		myQueue.append(newWord)
 		recursiveBuild(newWord,myQueue)
-		for i in myQueue:
-			GlobalQueue.put(i)
-		#print(myQueue)
+		newThread = Thread(target = consumer_thread(targetHash,myQueue))
 		myQueue = []
 		print(newWord)
+		newThread.start()
+
 def recursiveBuild(curPassWord,myQueue):
 	if len(curPassWord) == 6:
 		return 
@@ -155,13 +155,11 @@ def recursiveBuild(curPassWord,myQueue):
 
 
 
-def consumer_thread(targetHash):
+def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	print("cracking")
-	if GlobalQueue.empty():
-		time.sleep(5)
-	while not (GlobalQueue.empty()):
-		i = GlobalQueue.get()
+	
+	for i in myPWD:
 		result = genHash(i)
 		if str(result) == str(targetHash):
 			#print(result)
@@ -174,7 +172,6 @@ def consumer_thread(targetHash):
 def sendMsg(msg):
     account_sid = "ACe704104c6f665965aeb765eea2a1502a"
     auth_token = "2aa7630860a97a3fb9de4ab53a94abc4"
-
     client = Client(account_sid, auth_token)
     client.api.account.messages.create(
         to="+14158109857",
@@ -185,11 +182,7 @@ def sendMsg(msg):
 def main():
 	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 	targetHash = testHash
-	newTread = Thread(target = generatePW())
-	newTread.start()
-	for i in range (8):
-		consumerThread = Thread(target = consumer_thread(targetHash))
-		consumerThread.start()
+	generatePW(targetHash)
 	#generatePW(targetHash)
 
 def notThreading():

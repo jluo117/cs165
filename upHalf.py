@@ -151,6 +151,7 @@ def generatePW(targetHash):
 				return 
 		
 def consumer_thread(targetHash,myPWD):
+	print("cracking")
 	for i in myPWD:
 		result = genHash(i)
 		if str(result) == str(targetHash):

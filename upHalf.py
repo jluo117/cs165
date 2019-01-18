@@ -126,6 +126,7 @@ def generatePW(targetHash):
 	for i in range(111,123):
 		myQueue = []
 		curPassWord = chr(i)
+		print(curPassWord)
 		myQueue.append(curPassWord)
 		for j in range(97,123):
 			curPassWord = chr(i) + chr(j)

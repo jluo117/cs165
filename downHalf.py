@@ -134,6 +134,7 @@ def generatePW(targetHash):
 		for j in range(97,123):
 			curPassWord = chr(startNum - i) + chr(j)
 			myQueue.append(curPassWord)
+			print(curPassWord)	
 			for k in range(97,123):
 				curPassWord = chr(startNum - i) + chr(j) + chr(k)
 				myQueue.append(curPassWord)
@@ -146,11 +147,13 @@ def generatePW(targetHash):
 						for n in range(97,123):
 							curPassWord = chr(startNum - i) + chr(j) + chr(k) + chr(l) + chr(m) + chr(n)
 							myQueue.append(curPassWord)
-							curPassWord = ""
-		mythread = threading.Thread(consumer_thread(targetHash,myQueue))
+							if len(solved) == 0:
+								return 
+		holdingQueue = myQueue
+		mythread = threading.Thread(consumer_thread(targetHash,holdingQueue))
 		mythread.start()
-		if len(solved) == 0:
-			return 
+		myQueue = []
+
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	for i in myPWD:

@@ -123,34 +123,34 @@ def genHash(password):
 	reorderResult =  reorder(fasthash)
 	return aryToStr(reorderResult)
 def generatePW(targetHash):
-	for i in range(99,123):
+	startChar = ord('c')
+	for i in range(startChar,123):
+		myQueue = []
 		curPassWord = chr(i)
-		mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-		mythread.start()
+		myQueue.append(curPassWord)
 		print(curPassWord)
 		for j in range(97,123):
 			curPassWord = chr(i) + chr(j)
-			mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-			mythread.start()
+			myQueue.append(curPassWord)
 			for k in range(97,123):
 				curPassWord = chr(i) + chr(j) + chr(k)
-				mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-				mythread.start()
+				myQueue.append(curPassWord)
 				for l in range(97,123):
 					curPassWord = chr(i) + chr(j) + chr(k) + chr(l)
-					mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-					mythread.start()
+					myQueue.append(curPassWord)
 					for m in range(97,123):
 						curPassWord = chr(i) + chr(j) + chr(k) + chr(l) + chr(m)
-						mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-						mythread.start()
+						myQueue.append(curPassWord)
 						for n in range(97,123):
 							curPassWord = chr(i) + chr(j) + chr(k) + chr(l) + chr(m) + chr(n)
-							mythread = threading.Thread(consumer_thread(targetHash,curPassWord))
-							mythread.start()	
+							myQueue.append(curPassWord)
 							if len(solved) == 0:
-								return 
-							curPassWord = ""
+								return
+			holdingQueue = myQueue
+			myThread = threading.Thread(target = consumer_thread(targetHash,holdingQueue))
+			myQueue = []
+			print(curPassWord)
+
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	result = genHash(myPWD)
@@ -178,7 +178,9 @@ def sendMsg(msg):
 def main():
 	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 	targetHash = testHash
-	generatePW(targetHash)
+	newTread = threading.Thread(target = generatePW(targetHash))
+	newTread.start()
+	#generatePW(targetHash)
 
 def notThreading():
 	start_time = time.time()

@@ -123,7 +123,7 @@ def genHash(password):
 	reorderResult =  reorder(fasthash)
 	return aryToStr(reorderResult)
 def generatePW(targetHash):
-	for i in range(112,123):
+	for i in range(111,123):
 		myQueue = []
 		curPassWord = chr(i)
 		print(curPassWord)

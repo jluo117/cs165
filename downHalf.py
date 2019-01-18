@@ -10,7 +10,6 @@ import threading
 from multiprocessing import *
 from queue import *
 import 	time
-myQueue = []
 solved = ["done"]
 doneValue = set()
 CryptBase = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -127,6 +126,7 @@ def genHash(password):
 def generatePW(targetHash):
 	diffrent = 110 - 97
 	for i in range(diffrent):
+		myQueue = []
 		startNum = ord('l')
 		curPassWord = chr(startNum - i)
 		print(curPassWord)		
@@ -146,11 +146,11 @@ def generatePW(targetHash):
 						for n in range(97,123):
 							curPassWord = chr(startNum - i) + chr(j) + chr(k) + chr(l) + chr(m) + chr(n)
 							myQueue.append(curPassWord)
-							mythread = threading.Thread(consumer_thread(targetHash,myQueue))
-							mythread.start()
-							if len(solved) == 0:
-								return 
 							curPassWord = ""
+		mythread = threading.Thread(consumer_thread(targetHash,myQueue))
+		mythread.start()
+		if len(solved) == 0:
+			return 
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
 	for i in myPWD:

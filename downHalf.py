@@ -6,7 +6,7 @@ import threading
 #import numpy as np
 import twilio
 from twilio.rest import Client
-import threading
+from threading import Thread
 from multiprocessing import *
 from queue import *
 import 	time

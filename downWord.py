@@ -154,14 +154,15 @@ def generatePW(targetHash):
 
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)
-	result = genHash(myPWD)
 	#doneValue.add(myPWD)
-	if str(result) == str(targetHash):
+	for i in myPWD:
+		result = genHash(i)
+		if str(result) == str(targetHash):
 			#print(result)
-		print(myPWD)
-		sendMsg(myPWD)
-		solved.pop()
-	return 
+			print(myPWD)
+			sendMsg(myPWD)
+			solved.pop()
+			return 
 	#sys.exit()
 
 def sendMsg(msg):

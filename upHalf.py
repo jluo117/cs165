@@ -157,7 +157,7 @@ def consumer_thread(targetHash,myPWD):
 			print(myPWD)
 			sendMsg(myPWD)
 			solved.pop()
-	return 
+			return 
 	#sys.exit()
 
 def sendMsg(msg):

@@ -145,7 +145,7 @@ def generatePW(targetHash):
 							curPassWord = chr(i) + chr(j) + chr(k) + chr(l) + chr(m) + chr(n)
 							myQueue.append(curPassWord)
 			targetQueue = myQueue
-			mythread = threading.Thread(consumer_thread(targetHash,targetQueue))
+			mythread = Thread(consumer_thread(targetHash,targetQueue))
 			mythread.start()
 			if len(solved) == 0:
 				return 

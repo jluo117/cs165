@@ -9,6 +9,8 @@ from twilio.rest import Client
 import threading
 from queue import *
 import 	time
+from multiprocessing import Process
+import os
 solved = ["done"]
 doneValue = set()
 CryptBase = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -148,7 +150,7 @@ def generatePW(targetHash):
 							if len(solved) == 0:
 								return
 			holdingQueue = myQueue
-			myThread = threading.Thread(target = consumer_thread(targetHash,holdingQueue))
+			myThread = Thread(target = consumer_thread(targetHash,holdingQueue))
 			myQueue = []
 			myThread.start()
 			print(curPassWord)
@@ -180,7 +182,7 @@ def sendMsg(msg):
 def main():
 	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 	targetHash = testHash
-	newTread = threading.Thread(target = generatePW(targetHash))
+	newTread = Thread(target = generatePW(targetHash))
 	newTread.start()
 	#generatePW(targetHash)
 

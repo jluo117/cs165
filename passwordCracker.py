@@ -186,7 +186,7 @@ def main():
 	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 	targetHash = testHash
 	generatePW(targetHash)
-	for t in threads:
+	for t in threadStack:
 		t.join()
 	#generatePW(targetHash)
 

@@ -23,7 +23,7 @@ salt = "hfT7jp2q"
 salt = salt
 magic = "$1$"
 passwordList = Queue()
-targetHash = None
+targetHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 _c_digest_offsets = (
     (0, 3), (5, 1), (5, 3), (1, 2), (5, 1), (5, 3), (1, 3),
     (4, 1), (5, 3), (1, 3), (5, 0), (5, 3), (1, 3), (5, 1),
@@ -132,44 +132,53 @@ def genHash(password):
 def generatePW(targetHash):
 	startChar = ord('c')
 	for i in range(startChar,122):
-		myQueue = []
 		curPassWord = chr(i)
-		myQueue.append(curPassWord)
-		print(curPassWord)
-		baseCase2(curPassWord,myQueue,targetHash)
-		newThread = Thread(target = consumer_thread,args = (targetHash,myQueue))
-		threadStack.append(newThread)
+		passwordList.put(curPassWord)
+		#print(curPassWord)
+		baseCase2(curPassWord,targetHash)
 		newThread.start()
-def baseCase2(curPassWord,myQueue,targetHash):
+def baseCase2(curPassWord,targetHash):
 	for i in range(97,123):
 		newWord = curPassWord + chr(i)
-		myQueue.append(newWord)
-		recursiveBuild(newWord,myQueue)		
+		passwordList.put(newWord)
+		recursiveBuild(newWord)
 		print(newWord)
+		for i in range(6):
+			newThread = Thread(target = consumer_thread)
+			threadStack.append(newThread)
+			newThread.start()
+		for i in threadStack:
+			while i.isAlive():
+				continue
+		while len(threadStack) != 0:
+			threadStack.pop()
 		
 
-def recursiveBuild(curPassWord,myQueue):
+def recursiveBuild(curPassWord):
 	if len(curPassWord) == 6:
 		return 
 	for i in range(97,123):
 		newWord = curPassWord + chr(i)
-		myQueue.append(newWord)
-		recursiveBuild(newWord,myQueue)
+		passwordList.put(newWord)
+		recursiveBuild(newWord)
 
 
 
-def consumer_thread(targetHash,myPWD):
+def consumer_thread():
 	#print(myPWD)
 	print("cracking")
 	
-	for i in myPWD:
-		result = genHash(i)
+	while not passwordList.empty():
+		curPass = passwordList.get()
+		result = genHash(curPass)
 		if str(result) == str(targetHash):
 			#print(result)
 			print(myPWD)
 			sendMsg(myPWD)
 			solved.pop()
+			sys.exit()
 			return 
+	print("Thread finished")
 	#sys.exit()
 
 def sendMsg(msg):
@@ -183,8 +192,8 @@ def sendMsg(msg):
         )
 
 def main():
-	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
-	targetHash = testHash
+	#testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
+	#targetHash = testHash
 	generatePW(targetHash)
 	for t in threadStack:
 		t.join()

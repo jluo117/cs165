@@ -147,6 +147,7 @@ def baseCase2(curPassWord,targetHash):
 			newThread = Thread(target = consumer_thread)
 			threadStack.append(newThread)
 			newThread.start()
+		consumer_thread()
 		for i in threadStack:
 			while i.isAlive():
 				continue
@@ -173,8 +174,8 @@ def consumer_thread():
 		result = genHash(curPass)
 		if str(result) == str(targetHash):
 			#print(result)
-			print(myPWD)
-			sendMsg(myPWD)
+			print(curPass)
+			sendMsg(curPass)
 			solved.pop()
 			sys.exit()
 			return 
@@ -182,10 +183,10 @@ def consumer_thread():
 	#sys.exit()
 
 def sendMsg(msg):
-    account_sid = "ACe704104c6f665965aeb765eea2a1502a"
-    auth_token = "2aa7630860a97a3fb9de4ab53a94abc4"
-    client = Client(account_sid, auth_token)
-    client.api.account.messages.create(
+	account_sid = "ACe704104c6f665965aeb765eea2a1502a"
+	auth_token = "2aa7630860a97a3fb9de4ab53a94abc4"
+	client = Client(account_sid, auth_token)
+	client.api.account.messages.create(
         to="+14158109857",
         from_="+15108228362",
         body=msg,

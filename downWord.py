@@ -159,8 +159,8 @@ def consumer_thread(targetHash,myPWD):
 		result = genHash(i)
 		if str(result) == str(targetHash):
 			#print(result)
-			print(myPWD)
-			sendMsg(myPWD)
+			print(i)
+			sendMsg(i)
 			solved.pop()
 			return 
 	#sys.exit()
@@ -194,6 +194,6 @@ def notThreading():
 	myThread2 = threading.Thread( target = consumer_thread(targetHash))
 	myThread2.start()
 
-#start_time = time.time()
-main()
-#print("--- %s seconds ---" % (time.time() - start_time))
+start_time = time.time()
+genHash("password")
+print("--- %s seconds ---" % (time.time() - start_time))

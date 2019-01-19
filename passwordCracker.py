@@ -12,7 +12,9 @@ import 	time
 from multiprocessing import Process
 from threading import Thread
 import os
-GlobalQueue = Queue()
+
+#GlobalQueue = Queue()
+threadStack = []
 solved = ["done"]
 doneValue = set()
 CryptBase = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -136,6 +138,7 @@ def generatePW(targetHash):
 		print(curPassWord)
 		baseCase2(curPassWord,myQueue,targetHash)
 		newThread = Thread(target = consumer_thread,args = (targetHash,myQueue))
+		threadStack.append(newThread)
 		newThread.start()
 def baseCase2(curPassWord,myQueue,targetHash):
 	for i in range(97,123):
@@ -183,6 +186,8 @@ def main():
 	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 	targetHash = testHash
 	generatePW(targetHash)
+	for t in threads:
+    	t.join()
 	#generatePW(targetHash)
 
 # def notThreading():

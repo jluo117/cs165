@@ -187,7 +187,7 @@ def main():
 	targetHash = testHash
 	generatePW(targetHash)
 	for t in threads:
-    	t.join()
+		t.join()
 	#generatePW(targetHash)
 
 # def notThreading():

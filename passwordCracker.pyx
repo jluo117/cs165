@@ -132,21 +132,19 @@ def genHash(password):
 def threadHandling():
 	for i in range(6):
 		newThread = Thread(target = consumer_thread)
+		newThread.start()		
 		threadStack.append(newThread)
-		newThread.start()
 	for i in range(len(threadStack)):
 		if threadStack[i].isAlive():
 			if len(passwordList) < 200:
-				time.sleep(5)
 				break
 			else:
-				time.sleep(20)
-				continue
+				threadStack[i].join()
 	while len(threadStack) != 0:
 		threadStack.pop()
 
 def generatePW(targetHash):
-	startChar = ord('c')
+	startChar = ord('e')
 	for i in range(startChar,122):
 		curPassWord = chr(i)
 		passwordList.append(curPassWord)
@@ -176,7 +174,7 @@ def consumer_thread():
 	#print(myPWD)
 	print("cracking")
 	
-	while not len(passwordList) > 0:
+	while len(passwordList) > 0:
 		curPass = passwordList.pop()
 		result = genHash(curPass)
 		if str(result) == str(targetHash):
@@ -201,8 +199,8 @@ def sendMsg(msg):
 def quickFix():
 	
 	#curPW = 'c'
-	for i in range (ord('f'),ord('z') + 1):
-		curPW = 'c' + chr(i)
+	for i in range (ord('g'),ord('z') + 1):
+		curPW = 'd' + chr(i)
 		passwordList.append(curPW)
 	#start_time = time.time()
 
@@ -232,7 +230,4 @@ def main():
 # 	myThread.start()
 # 	myThread2 = threading.Thread( target = consumer_thread(targetHash))
 # 	myThread2.start()
-
-#start_time = time.time()
 main()
-#print("--- %s seconds ---" % (time.time() - start_time))

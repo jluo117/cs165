@@ -14,6 +14,7 @@ from threading import Thread
 import os
 
 #GlobalQueue = Queue()
+count = 0
 threadStack = []
 solved = ["done"]
 doneValue = set()
@@ -22,7 +23,7 @@ md5CryptSwaps = [12, 6, 0, 13, 7, 1, 14, 8, 2, 15, 9, 3, 5, 10, 4, 11]
 salt = "hfT7jp2q"
 salt = salt
 magic = "$1$"
-passwordList = Queue()
+passwordList = []
 targetHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 _c_digest_offsets = (
     (0, 3), (5, 1), (5, 3), (1, 2), (5, 1), (5, 3), (1, 3),
@@ -134,19 +135,27 @@ def threadHandling():
 		threadStack.append(newThread)
 		newThread.start()
 	for i in range(len(threadStack)):
-		threadStack[i].join()
-		threadStack[i].pop()
+		if threadStack[i].isAlive():
+			if len(passwordList) < 200:
+				time.sleep(5)
+				break
+			else:
+				time.sleep(20)
+				continue
+	while len(threadStack) != 0:
+		threadStack.pop()
+
 def generatePW(targetHash):
 	startChar = ord('c')
 	for i in range(startChar,122):
 		curPassWord = chr(i)
-		passwordList.put(curPassWord)
+		passwordList.append(curPassWord)
 		#print(curPassWord)
 		baseCase2(curPassWord,targetHash)
 def baseCase2(curPassWord,targetHash):
 	for i in range(97,123):
 		newWord = curPassWord + chr(i)
-		passwordList.put(newWord)
+		passwordList.append(newWord)
 		recursiveBuild(newWord)
 		print(newWord)
 		threadHandling()
@@ -158,7 +167,7 @@ def recursiveBuild(curPassWord):
 		return 
 	for i in range(97,123):
 		newWord = curPassWord + chr(i)
-		passwordList.put(newWord)
+		passwordList.append(newWord)
 		recursiveBuild(newWord)
 
 
@@ -167,8 +176,8 @@ def consumer_thread():
 	#print(myPWD)
 	print("cracking")
 	
-	while not passwordList.empty():
-		curPass = passwordList.get()
+	while not len(passwordList) > 0:
+		curPass = passwordList.pop()
 		result = genHash(curPass)
 		if str(result) == str(targetHash):
 			#print(result)
@@ -191,12 +200,16 @@ def sendMsg(msg):
         )
 def quickFix():
 	
-	curPW = 'c'
+	#curPW = 'c'
 	for i in range (ord('f'),ord('z') + 1):
-		curPW = curPW + chr(i)
-	#passwordList.put(curPW)
+		curPW = 'c' + chr(i)
+		passwordList.append(curPW)
 	#start_time = time.time()
+
+		print(curPW)
+		#print(len(passwordList))
 		recursiveBuild(curPW)
+		print(len(passwordList))
 		threadHandling()
 def main():
 	#testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"

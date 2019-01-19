@@ -166,20 +166,20 @@ def consumer_thread(targetHash,myPWD):
 	#sys.exit()
 
 def sendMsg(msg):
-    account_sid = "ACe704104c6f665965aeb765eea2a1502a"
-    auth_token = "2aa7630860a97a3fb9de4ab53a94abc4"
-
-    client = Client(account_sid, auth_token)
-    client.api.account.messages.create(
+	account_sid = "ACe704104c6f665965aeb765eea2a1502a"
+	auth_token = "2aa7630860a97a3fb9de4ab53a94abc4"
+	client = Client(account_sid, auth_token)
+	client.api.account.messages.create(
         to="+14158109857",
         from_="+15108228362",
         body=msg,
         )
 
 def main():
-	testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
-	targetHash = testHash
-	generatePW(targetHash)
+	start_time = time.time()
+	for i in range(1000):
+		genHash("password")
+	print("--- %s seconds ---" % (time.time() - start_time))
 
 def notThreading():
 	start_time = time.time()
@@ -194,6 +194,4 @@ def notThreading():
 	myThread2 = threading.Thread( target = consumer_thread(targetHash))
 	myThread2.start()
 
-start_time = time.time()
-genHash("password")
-print("--- %s seconds ---" % (time.time() - start_time))
+main()

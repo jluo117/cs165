@@ -177,7 +177,8 @@ def sendMsg(msg):
 
 def main():
 	start_time = time.time()
-	genHash("password")
+	for i in range (1000):
+		genHash("password")
 	print("--- %s seconds ---" % (time.time() - start_time))
 
 def notThreading():
@@ -193,4 +194,3 @@ def notThreading():
 	myThread2 = threading.Thread( target = consumer_thread(targetHash))
 	myThread2.start()
 
-main()

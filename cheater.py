@@ -105,7 +105,7 @@ def quickFix():
 def main():
 	#testHash = "$1$hfT7jp2q$B96oRTlE0yZWjRx7qoO920"
 	#targetHash = testHash
-	quickFix()
+	#quickFix()
 	generatePW(targetHash)
 	for t in threadStack:
 		t.join()

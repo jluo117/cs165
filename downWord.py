@@ -149,7 +149,7 @@ def recursiveBuild(curPassWord,myQueue):
 		newWord = curPassWord + chr(i)
 		myQueue.append(newWord)
 		recursiveBuild(newWord,myQueue)
-
+def quickFix()
 
 def consumer_thread(targetHash,myPWD):
 	#print(myPWD)

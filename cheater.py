@@ -68,8 +68,10 @@ def consumer_thread():
 	print("cracking")
 	print(len(passwordList))
 	while len(passwordList) > 0:
+
 		curPass = passwordList.pop()
-		result = md5_crypt.using(salt = "hfT7jp2q").hash("password")
+		#print(curPass)
+		result = md5_crypt.using(salt = "hfT7jp2q").hash(curPass)
 		if str(result) == str(targetHash):
 			#print(result)
 			print(curPass)

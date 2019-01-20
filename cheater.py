@@ -1,7 +1,7 @@
 from passlib.hash import md5_crypt
-import  passwordCracker
-from hashlib import  md5
-import  hashlib
+#import  passwordCracker
+#from hashlib import  md5
+#import  hashlib
 import sys
 import threading
 #import numpy as np

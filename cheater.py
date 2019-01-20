@@ -46,9 +46,9 @@ def generatePW(targetHash):
 def baseCase2(curPassWord,targetHash):
 	for i in range(97,123):
 		newWord = curPassWord + chr(i)
+		print(newWord)
 		passwordList.append(newWord)
 		recursiveBuild(newWord)
-		print(newWord)
 		threadHandling()
 		
 		

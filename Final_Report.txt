@@ -1,0 +1,5 @@
+Name: Ulyana Tkachenko & James Luo
+Team #46 password: evmrou
+CPU: i7 8 cores, 8 threads
+
+Tried 321272406 combinations in 95346 seconds, troughput 3369/second.

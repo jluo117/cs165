@@ -1,0 +1,17 @@
+// -*- ASCII:EDT -*-
+
+BeginGroup;
+LetReg(9,"\subsubsection{");
+IfSel('0','=',>
+      !'SelectParagraph;>
+        IfSel(''0'',''='',>
+              !''Ins("\subsubsection{}");>
+                 CharLeft;'',>
+              !''SelCharLeft;>
+                 IfSel(''''0'''',''''='''',>
+                       !''''Ins("\subsubsection{}");>
+                            CharLeft;'''',>
+                       !''''Exe("%b\Macros\Sections\CommonSections.edt");'''')'')',>
+      !'Exe("%b\Macros\Sections\CommonSections.edt");');
+EndGroup;
+End;

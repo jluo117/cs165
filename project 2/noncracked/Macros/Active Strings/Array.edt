@@ -1,0 +1,18 @@
+// -*- ASCII:EDT -*-
+// Auto Response to: \begin{array}
+
+  SetTracking(0);
+  BeginGroup;
+  Ins('{');
+  InsertBullet;
+  Ins('}');
+  NewLine;
+  InsertBullet;
+  NewLine;
+  Ins('\end{array}');
+  LineUp(2);
+  TrackCaret;
+  NextBullet;
+  EndGroup;
+  SetTracking(1);
+End;

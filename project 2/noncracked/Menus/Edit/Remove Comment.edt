@@ -1,0 +1,18 @@
+// @BEGIN: HTML
+IfisMode('HTML;XML;PHP;HHC','%!m',!'SubLabel("<","!--","-->");End;');
+// @END: HTML
+
+// @BEGIN: DTX
+IfisMode('DTX','%!m',!'>
+   PushTagsandRegisters;>
+   MarkSelection(1,2);GoToBeginningOfLine;SelCharRight;>
+   IfStr("%S","%","=",!"RestoreSelection(1,2,1);RemoveString(`^^A`);",>
+        !"RestoreSelection(1,2,1);RemoveComment;");>
+   PopTagsandRegisters;>
+   Exit;');
+// @END: DTX
+
+// @DEFAULT
+RemoveComment;
+
+End;

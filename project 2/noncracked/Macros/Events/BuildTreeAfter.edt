@@ -1,0 +1,10 @@
+// Global Tree Build Event Handler (After)
+
+  Requires(20040806);
+  PushTagsandRegisters;
+
+  Relax;
+
+  PopTagsandRegisters;
+
+End;

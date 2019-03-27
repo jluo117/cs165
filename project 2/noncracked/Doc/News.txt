@@ -1,0 +1,133 @@
+* WinEdt News.txt
+Last modified on Friday, July 25, 2014  15:03
+__________________________________________________________________
+
+
+WinEdt 9 is a Unicode (UTF-8) text editor built on WinEdt 8 sources
+and compiled with Delphi XE6.
+
+UPGRADING ISSUES:
+=================
+
+WinEdt 9 is installed parallel to WinEdt 8, 7, 6 or 5 and you can
+continue to use an older version of WinEdt and possibly uninstall
+WinEdt 9 if you prefer the old version.
+
+IMPORTANT: If you already have WinEdt 5.x, 6 or 7 on your system
+you cannot import your old settings directly into WinEdt 9! If you
+already have WinEdt 8 installed the migration is easy: just execute
+the command 'Import WinEdt 8 Settings' from within WinEdt 9 and
+you're done...
+
+    Upgrading WinEdt 9 series from here on will be easy since your
+    local settings are preserved during upgrades. Executing the
+    command 'Upgrade Personal Configuration' will merge your custom
+    settings with the new defaults.
+
+REGISTRATION: WinEdt 9 series uses the same Registration Data as
+WinEdt 8, 7 and 6. You will, however, have to enter the data (Name
+and Code) again in the Registration Dialog of WinEdt 9. WinEdt 5
+users will have to pay an upgrade fee if they want to register
+WinEdt 9 (see www.winedt.com for details).
+
+------------------------------------------------------------------
+
+WinEdt 9 [Build 20140815 (v. 9.0)]
+==================================
+
+- WinEdt now has a new configuration [IMAGE_RESOURCES]. Here is
+where dpi-dependent Image Resources are managed:
+
+  This section manages dpi-dependent WinEdt Image Resources
+  The closest DPI selector <= screen resolution applies
+  Common Windows DPI (Magnification) values are:
+     96dpi (100%) - Old Low Resolution Monitors
+    120dpi (125%)
+    144dpi (150%)
+    192dpi (200%) - New Ultra High Definition Displays
+
+  WinEdt comes with pre-compiled Office 2013-style (high quality)
+  set of (over 500) icons in four sizes: 16x16, 24x24, 32x32,and 48x48.
+  They are available in %B\Bitmaps\Resources\WRLib32(dim).dll files.
+  As was the case in all versions since WinEdt 6 images were
+  prepared and created by Luca (based on the icon sets from Glyfz.com
+  in vector format). Months of hard work were needed to complete this
+  project.
+
+  Licensing Agreement with Glyfz.com does not allow WinEdt to include
+  these graphic resources directly as png images.
+
+  WinEdt also comes with %B\Bitmaps\Images folder where old-style 16x16
+  png files are stored.
+  If you want to use old icons you will have to enable the option
+  USE_SOURCE_FOLDER and disable the option USE_RESOURCE_DLL.
+  Similarly, you will have to enable the option USE_LOCAL_FOLDER if you want to
+  add private icons to the mix.
+  By default only the compiled dll graphic resources are used
+  (for performance and consistent appearance purposes)!
+
+  If you want to use icons at sizes different from the above you will have to
+  enable the option ALLOW_SCALING. Keep in mind that the quality of scaled
+  images is seriously reduced (especially when making them larger). When this
+  option is disabled and WinEdt encounters images of different size they are
+  either cropped or embedded (centered) in a larger image.
+
+  Memory consumption increases significantly (quadratically) with the dimension
+  or resources. Keep this in mind when modifying these settings!
+
+  TeX Symbols bitmaps are included at 125% and 200% magnification in
+  %B\Bitmaps\GUI125 and %B\Bitmaps\GUI200 folders. Default settings
+  should work for most users. You can add more images in your local folder
+  at appropriate resolution.
+  These bitmaps can be usually scaled-down reasonably well.
+
+  You can overwrite these values (for your resolution) in your private
+  settings if defaults do not reflect your choices...
+
+- Some properties have been removed from MAIN_MENU, TOOLBAR and
+GUI_PAGE_CONTROL sections because they are now managed in
+IMAGE_RESOURCES.
+
+GUI_PAGE_CONTROL:
+  SCALED_IMAGES
+  SCALED_BUTTONS
+
+TOOLBAR:
+  DEFAULT_BUTTON_WIDTH
+  DEFAULT_BUTTON_HEIGHT
+  SEPARATOR_WIDTH
+  SEPARATOR_HEIGHT
+  IMAGE_WIDTH
+  IMAGE_HEIGHT
+
+MAIN_MENU:
+  CUSTOM_DISABLED_IMAGES
+  IMAGE_WIDTH
+  IMAGE_HEIGHT
+
+- The first page of the Configuration Wizard now displays screen
+resolution (in case you are not sure)...
+
+- Images Arrow* have been renamed to Flag* (they have been flags
+since WinEdt 6)...
+
+- Captions in docked forms are now properly scaled on different
+resolutions and they now use a custom (modern-style) painting
+procedures.
+
+- Toolbars on Windows 7 and Vista are no longer transparent since
+coolbar gradient colors on these platforms blend poorly with
+modern-style images...
+
+- Frame titles (in TOC) now allow optional arguments and nested
+braces inside the title argument...
+
+__________________________________________________________________
+
+
+WinEdt 8 [Build 20140613 (v. 8.2)]
+==================================
+
+(see History)...
+
+------------------------------------------------------------------
